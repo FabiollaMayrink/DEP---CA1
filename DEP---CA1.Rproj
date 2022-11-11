@@ -1,5 +1,0 @@
-install.packages("tidyverse")
-library(tidyverse)
-
-path <- "file:///C:/Users/fafam/Downloads/dataset/abril2018.csv"
-print(path)
