@@ -42,5 +42,29 @@ df = subset(data, select = c(host_response_time , host_response_rate , host_is_s
 head(df)
 summary(df)
 
+#funcao para somar a quantidade de valores faltantes de cada coluna
+sapply(df, function(x) sum(is.na(x)))
 
+nrow(df) #show the quantity of rows in the dataframe.
+ncol(df) # show the quantity of columns  (deveriam ter 106 colunas e foram importadas apenas 97 precisa ser analisado)
+
+
+#EXCLUSAO DAS COLUNAS QUE POSSUEM MAIS DE 300000 VALORES FALTANTES
+
+
+df %>% 
+  select(
+    where(
+      ~sum(!is.na(.x)) > 300000 
+    )
+  )
+
+#EXCLUSAO DAS LIHAS QUE POSSUEM NA's USANDO drop_na()
+df <- df %>% drop_na()
+
+#MOSTRA O NUMERO ATUAL DE LINHAS
+nrow(df)
+
+#MOSTRANDO A ATUALIZACAO SEM NENHUMA LINHA VAZIA
+sapply(df, function(x) sum(is.na(x)))
  
