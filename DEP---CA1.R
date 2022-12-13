@@ -8,6 +8,12 @@ library(tidyimpute)
 install.packages("os")
 library(readr)
 library(tidytext)
+install.packages("reshape2")
+install.packages("reshape")
+library(reshape2)
+library(reshape)
+
+
 
   setwd("C:/Users/USER/Downloads/dataset") #chamar os datasets separados
   
@@ -91,6 +97,7 @@ library(tidytext)
   # df$extra_people <- gsub('[,]',"",as.character(df$extra_people))
   # as.numeric(as.character(df$extra_people))
   
+  
   sapply(df, class)
    
   # 
@@ -104,11 +111,28 @@ library(tidytext)
   cor(df$price,df$extra_people) 
   #correlacao mais perto do 1 significa que os valores crescem positivamente e possuem forte correlacao.
   
-  df %>%
-    count(price,extra_people) %>%
-    ggplot(mapping = aes(x=price, y=extra_people))+
-      geom_tile(mapping = aes(fill = n))
   
   ggplot(data= df)+
     geom_point(mapping = aes(x=price,y=extra_people))
-   
+  
+  
+  #heat map for 
+  df %>%
+    count(bed_type,price) %>%
+    ggplot(mapping = aes(x= bed_type, y= price))+
+      geom_tile(mapping = aes(fill = n))
+  
+  #visualize the price column with histogram 
+  priceAirbnb <- df$price
+hist(priceAirbnb)
+
+# DEFINING SOME FUNCTIONS FOR ANALISE OUTLIERS
+
+# Robust SCalar
+robust_scalar<- function(x)
+{ 
+  (x- median(x)) /(quantile(x,probs = .75) - quantile(x,probs = .25))
+}
+
+data <- robust_scalar(df$price)
+boxplot(data)
